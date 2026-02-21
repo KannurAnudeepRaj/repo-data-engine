@@ -1,0 +1,27 @@
+name: Data Engine
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate data
+        run: |
+          echo "Timestamp: $(date)" >> data.txt
+
+      - name: Commit
+        run: |
+          git config --global user.name "KannurAnudeepRaj"
+          git config --global user.email "KannurAnudeepRaj@gmail.com"
+          git add .
+          git commit -m "Data update $(date)" || echo "No change"
+          git push
